@@ -1,12 +1,9 @@
 import fs from "fs";
+import { idGenerator } from "../utils/utils.js";
 
 class ProductManager {
 	constructor(path) {
 		this.path = path;
-	}
-
-	idGenerator() {
-		return parseInt(Math.random() * 100000);
 	}
 
 	async getProducts() {
@@ -31,7 +28,7 @@ class ProductManager {
 	}
 
 	async setProduct(obj) {
-		const product = { ...obj, id: this.idGenerator() };
+		const product = { ...obj, id: idGenerator() };
 		const products = await this.getProducts();
 		products.push(product);
 		try {
