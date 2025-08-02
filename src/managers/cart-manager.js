@@ -57,13 +57,15 @@ class CartManager {
 			const carts = await this.getCarts();
 			const cart = await this.getCartById(cid);
 			const product = await productManager.getProductById(pid);
-			const productInCart = cart.products.find((prod) => prod.item.id === pid);
+			const productInCart = cart.products.find(
+				(prod) => prod.productId === pid
+			);
 
 			if (!productInCart) {
-				cart.products.push({ item: product, qty: 1 });
+				cart.products.push({ productId: product.id, qty: 1 });
 			} else {
 				cart.products.forEach((prod) => {
-					if (prod.item.id === pid) {
+					if (prod.productId === pid) {
 						prod.qty++;
 					}
 				});
