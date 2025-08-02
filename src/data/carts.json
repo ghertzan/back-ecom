@@ -1,0 +1,104 @@
+[
+    {
+        "id": 92743,
+        "products": [
+            {
+                "item": {
+                    "title": "Mesa Ratona Escandinava",
+                    "description": "Mesa baja estilo nórdico con tapa de madera natural y patas blancas.",
+                    "code": "MR456",
+                    "price": 24800,
+                    "status": true,
+                    "stock": 8,
+                    "category": "mesas",
+                    "thumbnails": [
+                        "/images/mesa-ratona-1.jpg",
+                        "/images/mesa-ratona-2.jpg"
+                    ],
+                    "id": 65129
+                },
+                "qty": 6
+            }
+        ]
+    },
+    {
+        "id": 1028,
+        "products": [
+            {
+                "item": {
+                    "title": "Cómoda 4 Cajones",
+                    "description": "Cómoda de pino macizo con 4 cajones amplios y tiradores metálicos.",
+                    "code": "C4C101",
+                    "price": 42300,
+                    "status": false,
+                    "stock": 0,
+                    "category": "almacenamiento",
+                    "thumbnails": [
+                        "/images/comoda-4cajones.jpg"
+                    ],
+                    "id": 99516
+                },
+                "qty": 2
+            },
+            {
+                "item": {
+                    "title": "Silla Eames",
+                    "description": "Silla de diseño moderno con patas de madera y asiento plástico resistente.",
+                    "code": "EA123",
+                    "price": 20000,
+                    "status": true,
+                    "stock": 10,
+                    "category": "sillas",
+                    "thumbnails": [
+                        "/images/silla-eames-1.jpg",
+                        "/images/silla-eames-2.jpg"
+                    ],
+                    "id": 26699
+                },
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "id": 98669,
+        "products": [
+            {
+                "item": {
+                    "title": "Banqueta Alta Industrial",
+                    "description": "Banqueta de hierro con asiento de madera, ideal para barras.",
+                    "code": "BAI202",
+                    "price": 16500,
+                    "status": true,
+                    "stock": 20,
+                    "category": "banquetas",
+                    "thumbnails": [
+                        "/images/banqueta-industrial.jpg"
+                    ],
+                    "id": 8972
+                },
+                "qty": 2
+            }
+        ]
+    },
+    {
+        "id": 3123126766,
+        "products": [
+            {
+                "item": {
+                    "title": "Banqueta Alta Industrial",
+                    "description": "Banqueta de hierro con asiento de madera, ideal para barras.",
+                    "code": "BAI202",
+                    "price": 16500,
+                    "status": true,
+                    "stock": 20,
+                    "category": "banquetas",
+                    "thumbnails": [
+                        "/images/banqueta-industrial.jpg"
+                    ],
+                    "id": 8972
+                },
+                "qty": 1
+            }
+        ]
+    }
+]

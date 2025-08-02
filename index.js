@@ -1,5 +1,3 @@
-import { productManager } from "./src/managers/product-manager.js";
+import { idGenerator } from "./src/utils/utils.js";
 
-console.log(await productManager.setProduct({name: ''}));
-
-
+console.log(idGenerator());

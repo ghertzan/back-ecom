@@ -1,3 +1,7 @@
+import crypto from "crypto";
+
 export function idGenerator() {
-	return parseInt(Math.random() * 100000);
+	const array = new Uint32Array(1);
+	crypto.getRandomValues(array);
+	return array[0];
 }
