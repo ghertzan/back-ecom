@@ -52,5 +52,33 @@
             "/images/silla-eames-2.jpg"
         ],
         "id": 26699
+    },
+    {
+        "title": "Escritorio Minimalista",
+        "description": "Escritorio compacto de líneas limpias ideal para home office.",
+        "code": "EM303",
+        "price": 29800,
+        "status": true,
+        "stock": 6,
+        "category": "escritorios",
+        "thumbnails": [
+            "/images/escritorio-minimalista-1.jpg",
+            "/images/escritorio-minimalista-2.jpg"
+        ],
+        "id": 1552683209
+    },
+    {
+        "title": "Rack para TV 55''",
+        "description": "Rack bajo de madera natural con estantes y puertas corredizas.",
+        "code": "RTV404",
+        "price": 38900,
+        "status": true,
+        "stock": 4,
+        "category": "racks",
+        "thumbnails": [
+            "/images/rack-tv-1.jpg",
+            "/images/rack-tv-2.jpg"
+        ],
+        "id": 1808408073
     }
 ]

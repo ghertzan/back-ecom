@@ -1,17 +1,16 @@
 import fs from "fs";
 import { idGenerator } from "../utils/utils.js";
 import { productManager } from "./product-manager.js";
-import { log } from "console";
 
 class CartManager {
 	constructor(path) {
 		this.path = path;
 	}
 
-	/* 
-    Crea un carro y lo agrega al listado de carros
-	items: Array de obj
-    */
+	/**
+	 * Crea un carrito de compras
+	 * @returns Carrito de compras vacío.
+	 */
 	async createCart() {
 		try {
 			const carts = await this.getCarts();
@@ -24,6 +23,10 @@ class CartManager {
 		}
 	}
 
+	/**
+	 *
+	 * @returns Array con carritos de compras si existen, si no un array vacío.
+	 */
 	async getCarts() {
 		try {
 			if (fs.existsSync(this.path)) {
@@ -39,6 +42,11 @@ class CartManager {
 		}
 	}
 
+	/**
+	 *
+	 * @param {number} cid Código del producto
+	 * @returns El carrito encontrado o un error
+	 */
 	async getCartById(cid) {
 		try {
 			const carts = await this.getCarts();
@@ -51,6 +59,12 @@ class CartManager {
 			throw error;
 		}
 	}
+	/**
+	 *
+	 * @param {number} cid
+	 * @param {number} pid
+	 * @returns El carrito con el atrículo nuevo o incremento en el artículo
+	 */
 
 	async addToCart(cid, pid) {
 		try {
