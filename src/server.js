@@ -11,10 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 
-app.get("/", (req, res) => {
-	res.send("Inicializado Express");
-});
-
 app.use(errorHandler);
 
 app.listen(8080, () => console.log("Escuchando en 8080"));
