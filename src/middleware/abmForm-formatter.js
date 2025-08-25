@@ -1,0 +1,16 @@
+export const abmFormFormatter = (req, res, next) => {
+	const product = req.body;
+	try {
+		product.price = parseFloat(product.price);
+		product.stock = parseInt(product.stock);
+		if (product.status) {
+			product.status = true;
+		} else {
+			product.status = false;
+		}
+		console.log("validator product:", product);
+	} catch (error) {
+		throw new Error(error);
+	}
+	next();
+};

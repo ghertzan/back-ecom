@@ -9,6 +9,11 @@ import cartRouter from "./routes/cart-router.js";
 import { productManager } from "./managers/product-manager.js";
 
 const app = express();
+const httpServer = app.listen(8080, () => {
+	console.log("Running on 8080");
+});
+
+const socketServer = new Server(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,19 +24,15 @@ app.set("view engine", "handlebars");
 app.set("views", path.join(process.cwd(), "src", "views"));
 
 app.use("/", viewsRouter);
-app.use("/api/products", productRouter);
+app.use("/api/products", productRouter(socketServer));
 app.use("/api/carts", cartRouter);
 
 app.use(errorHandler);
-
-const httpServer = app.listen(8080, () => {
-	console.log("Running on 8080");
-});
-
-const socketServer = new Server(httpServer);
 
 socketServer.on("connection", async (socket) => {
 	console.log(`User ${socket.id} connected`);
 
 	socketServer.emit("products", await productManager.getProducts());
 });
+
+export default socketServer;
