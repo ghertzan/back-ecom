@@ -33,6 +33,15 @@ socketServer.on("connection", async (socket) => {
 	console.log(`User ${socket.id} connected`);
 
 	socketServer.emit("products", await productManager.getProducts());
+
+	socket.on("disconnect", () => {
+		console.log(`User: ${socket.id} disconnected`);
+	});
+
+	socket.on("delete-product", async (pid) => {
+		socket.emit("deleted-product", await productManager.deleteProduct(pid));
+		socketServer.emit("products", await productManager.getProducts());
+	});
 });
 
 export default socketServer;

@@ -10,7 +10,7 @@ export const abmFormFormatter = (req, res, next) => {
 		}
 		console.log("validator product:", product);
 	} catch (error) {
-		throw new Error(error);
+		throw new Error(error.message);
 	}
 	next();
 };
