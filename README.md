@@ -1,96 +1,68 @@
-# 🛒 back-ecom
+# back-ecom
 
-**back-ecom** es un backend simple para un sistema de e-commerce, desarrollado en **Node.js** con **Express**, que permite gestionar productos y carritos utilizando rutas personalizadas y clases de manejo de archivos JSON como persistencia local. Para la primera entrega del curso de BackEnd en **CoderHouse**
+Proyecto backend para e-commerce de muebles y decoración.
 
-## 🚀 Tecnologías
+## Descripción
 
-- Node.js
-- Express
-- FS (sistema de archivos de Node)
-- ESM Modules (`type: module`)
+Este proyecto implementa una API RESTful para la gestión de productos de un e-commerce, permitiendo operaciones CRUD (crear, leer, actualizar y eliminar) sobre productos. Además, utiliza Socket.io para notificar en tiempo real a los clientes sobre cambios en el catálogo.
 
-## 🧠 Funcionalidades
+## Tecnologías utilizadas
 
-### 📦 Productos
+- **Node.js**
+- **Express**
+- **Socket.io**
+- **JavaScript ES6+**
+- **Persistencia en archivos JSON**
+- **Middlewares personalizados**
+- **Nodemon** (para desarrollo)
 
-- Crear un nuevo producto
-- Obtener todos los productos
-- Obtener un producto por ID
-- Actualizar producto
-- Eliminar producto
+## Estructura del proyecto
 
-### 🛒 Carritos
-
-- Crear un nuevo carrito
-- Agregar producto a un carrito
-- Obtener productos de un carrito
-
-## 🔌 Endpoints
-
-### Productos
-
-- `GET /api/products`: Lista todos los productos
-- `GET /api/products/:pid`: Obtiene un producto por ID
-- `POST /api/products`: Crea un nuevo producto
-- `PUT /api/products/:pid`: Actualiza un producto existente
-- `DELETE /api/products/:pid`: Elimina un producto
-
-### Carritos
-
-- `GET /api/carts/:cid`: Muestra los productos de un carrito
-- `POST /api/carts`: Crea un carrito nuevo
-- `POST /api/carts/:cid/product/:pid`: Agrega un producto a un carrito
-
-## 🧪 Ejemplo de uso
-
-```json
-// Crear un producto
-POST /api/products
-{
-  "title": "Silla de madera",
-  "description": "Silla artesanal",
-  "price": 1500,
-  "stock": 10,
-  "category": "muebles",
-  "thumbnails": [
-      "/images/silla-madera.jpg"
-    ]
-}
+```
+src/
+  routes/
+    product-router.js
+  managers/
+    product-manager.js
+  middleware/
+    abmForm-formatter.js
+  data/
+    products.json
+  utils/
+    utils.js
+README.md
+package.json
 ```
 
-## ▶️ Instalación y ejecución
+## Endpoints principales
 
-1. Clonar el repositorio:
+- `GET /api/products`  
+  Lista todos los productos.
 
-```bash
-git clone https://github.com/ghertzan/back-ecom.git
-cd back-ecom
-```
+- `GET /api/products/:pid`  
+  Obtiene un producto por su ID.
 
-1. Instalar dependencias:
+- `POST /api/products`  
+  Crea un nuevo producto.
 
-```bash
-npm install
-```
+- `PUT /api/products/:pid`  
+  Actualiza un producto existente.
 
-1. Ejecutar en modo desarrollo:
+- `DELETE /api/products/:pid`  
+  Elimina un producto.
 
-```bash
-npm run dev
-```
+## Websockets
 
-1. El servidor corre por defecto en: `http://localhost:8080`
+Cada vez que se agrega, actualiza o elimina un producto, se emite un evento a través de Socket.io para actualizar en tiempo real a los clientes conectados.
 
-## ⚙️ Utilidades destacadas
+## Instalación
 
-- Generador de IDs aleatorios en `utils.js` usando prefijos por entidad.
-- Persistencia local con archivos `.json` usando el módulo `fs.promises`.
+1. Clona el repositorio.
+2. Ejecuta `npm install` para instalar las dependencias.
+3. Inicia el servidor con `npm run dev` (requiere nodemon) o `node src/server.js`.
 
-## 📌 Notas
+## Notas
 
-- No requiere base de datos, ideal para testing o proyectos de práctica.
-- Se puede extender fácilmente para conectar con MongoDB o añadir autenticación.
-
-## 🪪 Licencia
-
-Licenciado bajo ISC.
+- Los productos se almacenan en el archivo `src/data/products.json`.
+- El proyecto no incluye autenticación ni autorización.
+- Se recomienda validar los datos antes de
