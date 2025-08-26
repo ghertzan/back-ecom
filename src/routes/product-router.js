@@ -28,7 +28,8 @@ const productRouter = (socketServer) => {
 		try {
 			const product = req.body;
 			res.json(await productManager.setProduct(product));
-			socketServer.emit("product-added", await productManager.getProducts());
+			if (socketServer)
+				socketServer.emit("product-added", await productManager.getProducts());
 		} catch (error) {
 			next(error);
 		}

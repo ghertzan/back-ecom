@@ -4,6 +4,15 @@ const abmForm = document.getElementById("abmForm");
 
 const productsList = document.getElementById("productsList");
 
+const clearBtn = document.getElementById("clearBtn");
+
+function currencyFormat(amount) {
+	return new Intl.NumberFormat("es-AR", {
+		style: "currency",
+		currency: "ARS",
+	}).format(amount);
+}
+
 function listOfProducts(productsArray) {
 	let infoProducts = "";
 	if (productsArray.length === 0) {
@@ -11,16 +20,18 @@ function listOfProducts(productsArray) {
 	} else {
 		productsArray.forEach((product) => {
 			infoProducts += `
-                <li class=" list-group-item gap-2 d-flex flex-row align-items-center justify-content-around"> 
-					<div class="...">
+                <li class=" list-group-item d-flex flex-column "> 
+					<div class=" align-content-start">
 						<p><strong>Nombre:</strong> ${product.title}</p>
 						<p><strong>Descripción:</strong> ${product.description}</p>
 						<p><strong>Stock:</strong> ${product.stock}</p>
-						<p><strong>Precio:</strong> ${product.price}</p>
+						<p><strong>Precio:</strong> ${currencyFormat(product.price)}</p>
 					</div>
   							
-					<div class="...">
-						<button type="button" class="btn btn-danger" id="${product.id}" onClick="deleteProduct(${product.id})">Eliminar</button>
+					<div class=" align-content-around justify-content-around m-1 ">
+						<button type="button" class="btn btn-danger" id="${
+							product.id
+						}" onClick="deleteProduct(${product.id})">Eliminar</button>
 					</div>
                     
                 </li>
@@ -40,7 +51,7 @@ socket.on("product-added", (products) => {
 
 socket.on("deleted-product", (product) => {
 	Swal.fire({
-		title: "Echo",
+		title: "Listo!",
 		text: `El producto ${product.title} fue eliminado`,
 		icon: "success",
 	});
@@ -58,8 +69,13 @@ abmForm?.addEventListener("submit", (e) => {
 		},
 		body: JSON.stringify(data),
 	}).then((res) => res.json());
+	abmForm.reset();
 });
 
 const deleteProduct = (id) => {
 	socket.emit("delete-product", id);
 };
+
+clearBtn?.addEventListener("click", (e) => {
+	abmForm.reset();
+});
