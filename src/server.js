@@ -7,11 +7,16 @@ import viewsRouter from "./routes/views-router.js";
 import productRouter from "./routes/product-router.js";
 import cartRouter from "./routes/cart-router.js";
 import { productManager } from "./managers/product-manager.js";
+import { initMongoDB } from "./data/db-connection.js";
 
 const app = express();
 const httpServer = app.listen(8080, () => {
 	console.log("Running on 8080");
 });
+
+initMongoDB()
+	.then((res) => console.log("Connected to MongoDB"))
+	.catch((error) => console.error(error));
 
 const socketServer = new Server(httpServer);
 
