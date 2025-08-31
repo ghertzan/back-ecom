@@ -15,7 +15,7 @@ const httpServer = app.listen(8080, () => {
 });
 
 initMongoDB()
-	.then((res) => console.log("Connected to MongoDB"))
+	.then((res) => console.log("Connected to MongoDB:"))
 	.catch((error) => console.error(error));
 
 const socketServer = new Server(httpServer);
