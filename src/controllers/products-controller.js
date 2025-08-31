@@ -29,10 +29,7 @@ class ProductController {
 
 	create = async (req, res, next) => {
 		try {
-			console.log(req.body);
-
 			const productData = req.body;
-			console.log(productData);
 			const newProduct = await this.manager.create(productData);
 			res.status(201).json(newProduct);
 		} catch (error) {
