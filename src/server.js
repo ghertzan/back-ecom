@@ -14,10 +14,6 @@ const httpServer = app.listen(8080, () => {
 	console.log("Running on 8080");
 });
 
-initMongoDB()
-	.then((res) => console.log("Connected to MongoDB:"))
-	.catch((error) => console.error(error));
-
 const socketServer = new Server(httpServer);
 
 app.use(express.json());
@@ -33,6 +29,10 @@ app.use("/api/products", productRouter(socketServer));
 app.use("/api/carts", cartRouter);
 
 app.use(errorHandler);
+
+initMongoDB()
+	.then((res) => console.log("Connected to MongoDB:"))
+	.catch((error) => console.error(error));
 
 socketServer.on("connection", async (socket) => {
 	console.log(`User ${socket.id} connected`);

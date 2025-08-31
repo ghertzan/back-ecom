@@ -1,4 +1,4 @@
-import { productManager } from "../managers/product-manager";
+import { productManager } from "../managers/product-manager.js";
 
 class ProductController {
 	constructor(manager) {
@@ -29,7 +29,10 @@ class ProductController {
 
 	create = async (req, res, next) => {
 		try {
-			const productData = res.body;
+			console.log(req.body);
+
+			const productData = req.body;
+			console.log(productData);
 			const newProduct = await this.manager.create(productData);
 			res.status(201).json(newProduct);
 		} catch (error) {

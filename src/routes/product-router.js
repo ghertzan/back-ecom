@@ -1,18 +1,12 @@
 import { Router } from "express";
-import { productManager } from "../managers/product-manager.js";
+// import { productManager } from "../managers/product-manager.js";
 import { abmFormFormatter } from "../middleware/abmForm-formatter.js";
+import { productController } from "../controllers/products-controller.js";
 
 const productRouter = (socketServer) => {
 	const router = Router();
 
-	router.get("/", async (req, res, next) => {
-		try {
-			const products = await productManager.getProducts();
-			res.json(products);
-		} catch (error) {
-			next(error);
-		}
-	});
+	router.get("/", productController.getAll);
 
 	router.get("/:pid", async (req, res, next) => {
 		try {
@@ -24,16 +18,7 @@ const productRouter = (socketServer) => {
 		}
 	});
 
-	router.post("/", abmFormFormatter, async (req, res, next) => {
-		try {
-			const product = req.body;
-			res.json(await productManager.setProduct(product));
-			if (socketServer)
-				socketServer.emit("product-added", await productManager.getProducts());
-		} catch (error) {
-			next(error);
-		}
-	});
+	router.post("/", productController.create);
 
 	router.put("/:pid", async (req, res, next) => {
 		try {
