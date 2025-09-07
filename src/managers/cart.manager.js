@@ -1,5 +1,5 @@
-import { productModel } from "../models/products-model.js";
-class ProductManager {
+import { cartModel } from "../daos/mongo/models/cart.model.js";
+class CartManager {
 	constructor(model) {
 		this.model = model;
 	}
@@ -20,17 +20,17 @@ class ProductManager {
 		}
 	};
 
-	create = async (productObj) => {
+	create = async (cartObj) => {
 		try {
-			return this.model.create(productObj);
+			return await this.model.create(cartObj);
 		} catch (error) {
 			throw new Error(error);
 		}
 	};
 
-	update = async (id, productData) => {
+	update = async (id, cartData) => {
 		try {
-			return this.model.findByIdAndUpdate(id, productData, { new: true });
+			return await this.model.findByIdAndUpdate(id, cartData, { new: true });
 		} catch (error) {
 			throw new Error(error);
 		}
@@ -38,11 +38,11 @@ class ProductManager {
 
 	delete = async (id) => {
 		try {
-			return this.model.findByIdAndDelete(id);
+			return await this.model.findByIdAndDelete(id);
 		} catch (error) {
 			throw new Error(error);
 		}
 	};
 }
 
-export const productManager = new ProductManager(productModel);
+export const cartManager = new CartManager(cartModel);

@@ -6,6 +6,7 @@ const productSchema = new Schema({
 		minLength: [3, "Deben ser más de 3 caracteres"],
 		maxLenght: [25, "Máximo 25 carecteres"],
 		required: true,
+		index: true,
 	},
 	description: {
 		type: String,
@@ -18,6 +19,7 @@ const productSchema = new Schema({
 		minLength: [3, "Deben ser más de 3 caracteres"],
 		maxLenght: [10, "Máximo 10 carecteres"],
 		required: true,
+		index: true,
 	},
 	price: {
 		type: Number,
