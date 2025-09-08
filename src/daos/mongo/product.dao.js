@@ -5,9 +5,24 @@ class ProductDao {
 		this.model = model;
 	}
 
-	getAllProducts = async () => {
+	getAllProducts = async (page = 1, limit = 10, query, sort) => {
 		try {
-			return await this.model.find({});
+			const filter = {};
+			if (query) {
+				const parsed = JSON.parse(query);
+				Object.assign(filter, parsed);
+				console.log(filter);
+			}
+			let sortOrder = {};
+
+			if (sort) {
+				sortOrder.price = sort === "asc" ? 1 : sort === "des" ? -1 : null;
+			}
+			return await this.model.paginate(filter, {
+				page,
+				limit,
+				sort: sortOrder,
+			});
 		} catch (error) {
 			throw new Error(error);
 		}

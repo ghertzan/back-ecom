@@ -6,9 +6,9 @@ class ProductService {
 		this.dao = dao;
 	}
 
-	getAllProducts = async () => {
+	getAllProducts = async (page, limit, query, sort) => {
 		try {
-			const products = await this.dao.getAllProducts();
+			const products = await this.dao.getAllProducts(page, limit, query, sort);
 			return products;
 		} catch (error) {
 			throw new Error(error);

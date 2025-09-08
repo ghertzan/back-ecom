@@ -7,8 +7,35 @@ class ProductController {
 
 	getAllProducts = async (req, res, next) => {
 		try {
-			const products = await this.service.getAllProducts();
-			res.json(products);
+			const { page, limit, query, sort } = req.query;
+
+			const response = await this.service.getAllProducts(
+				page,
+				limit,
+				query,
+				sort
+			);
+			const nextPage = response.hasNextPage
+				? `http://localhost:8080/api/products?page=${response.nextPage}`
+				: null;
+			const prevPage = response.hasPrevPage
+				? `http://localhost:8080/api/products?page=${response.prevPage}`
+				: null;
+			res.json({
+				payload: response.docs,
+				info: {
+					status: stat,
+					count: response.totalDocs,
+					totalPages: response.totalPages,
+					prevPage: response.prevPage,
+					nextPage: response.nextPage,
+					page: response.page,
+					nextLink: nextPage,
+					prevLink: prevPage,
+					hasNextPage: response.hasNextPage,
+					hasPrevPage: response.hasPrevPage,
+				},
+			});
 		} catch (error) {
 			next(error);
 		}

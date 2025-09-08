@@ -15,7 +15,7 @@ class CartDao {
 
 	getCartById = async (id) => {
 		try {
-			return await this.model.findById(id);
+			return await this.model.findById(id).populate("items.product");
 		} catch (error) {
 			throw new Error(error);
 		}
