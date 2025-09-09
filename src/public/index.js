@@ -1,10 +1,10 @@
-const socket = io();
-
 const abmForm = document.getElementById("abmForm");
 
 const productsList = document.getElementById("productsList");
 
 const clearBtn = document.getElementById("clearBtn");
+
+const pagination = document.getElementById("pagination");
 
 function currencyFormat(amount) {
 	return new Intl.NumberFormat("es-AR", {
@@ -13,11 +13,19 @@ function currencyFormat(amount) {
 	}).format(amount);
 }
 
-function listOfProducts(productsArray) {
+function listOfProducts(productsArray, info) {
 	let infoProducts = "";
+	let infoPagination = "";
 	if (productsArray.length === 0) {
 		infoProducts = `<p class="fs-3">No hay productos para mostrar</p>`;
 	} else {
+		const { count, totalPages, nextLink, prevLink } = info;
+		infoPagination = `
+		<li class="page-item"><a onClick="getData(${prevLink})" href=# class="page-link">Previous</a></li>
+
+		<li class="page-item"><a onClick="getData(${nextLink})" href=# class="page-link" >Next</a></li>
+		`;
+		pagination.innerHTML = infoPagination;
 		productsArray.forEach((product) => {
 			infoProducts += `
                 <li class=" list-group-item d-flex flex-column "> 
@@ -30,8 +38,8 @@ function listOfProducts(productsArray) {
   							
 					<div class=" align-content-around justify-content-around m-1 ">
 						<button type="button" class="btn btn-danger" id="${
-							product.id
-						}" onClick="deleteProduct(${product.id})">Eliminar</button>
+							product._id
+						}" onClick="deleteProduct(${product._id})">Eliminar</button>
 					</div>
                     
                 </li>
@@ -41,41 +49,41 @@ function listOfProducts(productsArray) {
 	productsList.innerHTML = infoProducts;
 }
 
-socket.on("products", (products) => {
-	listOfProducts(products);
-});
+// abmForm?.addEventListener("submit", (e) => {
+// 	e.preventDefault();
+// 	const formData = new FormData(abmForm);
+// 	const data = Object.fromEntries(formData);
 
-socket.on("product-added", (products) => {
-	listOfProducts(products);
-});
+// 	fetch("/api/products", {
+// 		method: "POST",
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 		},
+// 		body: JSON.stringify(data),
+// 	}).then((res) => res.json());
+// 	abmForm.reset();
+// });
 
-socket.on("deleted-product", (product) => {
-	Swal.fire({
-		title: "Listo!",
-		text: `El producto ${product.title} fue eliminado`,
-		icon: "success",
-	});
-});
+// clearBtn?.addEventListener("click", (e) => {
+// 	abmForm.reset();
+// });
 
-abmForm?.addEventListener("submit", (e) => {
-	e.preventDefault();
-	const formData = new FormData(abmForm);
-	const data = Object.fromEntries(formData);
+getData = (url) => {
+	console.log("hola");
 
-	fetch("/api/products", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	}).then((res) => res.json());
-	abmForm.reset();
-});
-
-const deleteProduct = (id) => {
-	socket.emit("delete-product", id);
+	fetch(url)
+		.then((res) => {
+			return res.json();
+		})
+		.then((data) => {
+			listOfProducts(data.payload, data.info);
+		});
 };
 
-clearBtn?.addEventListener("click", (e) => {
-	abmForm.reset();
-});
+fetch("http://localhost:8080/api/products/")
+	.then((res) => {
+		return res.json();
+	})
+	.then((data) => {
+		listOfProducts(data.payload, data.info);
+	});

@@ -80,21 +80,16 @@ class CartService {
 
 	changeProductQty = async (cid, pid, qty) => {
 		try {
-			if (qty < 0) {
-				throw new CustomError("Error: qty must be positive", 400);
+			const existCart = await this.getCartById(cid);
+			const existProd = await productDao.getProductById(pid);
+			if (!existCart) {
+				throw new CustomError("Cart not found", 404);
+			}
+			if (!existProd) {
+				throw new CustomError("Product not found", 404);
 			}
 
-			const product = await productDao.getProductById(pid);
-
-			if (!product) {
-				throw new CustomError("Error: Product not found", 404);
-			}
-
-			if (qty === 0) {
-				return await this.dao.removeProductFromCart(cid, product._id);
-			}
-
-			return await this.dao.changeProductQty(cid, product._id, qty);
+			return await this.dao.changeProductQty(existCart._id, existProd._id, qty);
 		} catch (error) {
 			throw new Error(error);
 		}

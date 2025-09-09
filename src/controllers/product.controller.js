@@ -24,7 +24,6 @@ class ProductController {
 			res.json({
 				payload: response.docs,
 				info: {
-					status: stat,
 					count: response.totalDocs,
 					totalPages: response.totalPages,
 					prevPage: response.prevPage,

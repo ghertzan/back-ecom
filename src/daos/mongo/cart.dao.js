@@ -75,11 +75,19 @@ class CartDao {
 
 	changeProductQty = async (cid, pid, qty) => {
 		try {
-			return await this.model.findOneAndUpdate(
+			let updatedCart = await this.model.findOneAndUpdate(
 				{ _id: cid, "items.product": pid },
 				{ $set: { "items.$.qty": qty } },
 				{ new: true }
 			);
+			if (!updatedCart) {
+				updatedCart = await this.model.findByIdAndUpdate(
+					cid,
+					{ $push: { items: { product: pid, qty: qty } } },
+					{ new: true }
+				);
+			}
+			return updatedCart;
 		} catch (error) {
 			throw new Error(error);
 		}

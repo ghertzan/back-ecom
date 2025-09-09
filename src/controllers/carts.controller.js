@@ -42,7 +42,6 @@ class CartController {
 		try {
 			const { cid } = req.params;
 			const { pid } = req.params;
-
 			const updatedCart = await this.service.addProductToCart(cid, pid);
 			res.status(200).json(updatedCart);
 		} catch (error) {
@@ -77,7 +76,7 @@ class CartController {
 		try {
 			const { cid } = req.params;
 			const { pid } = req.params;
-			const { qty } = req.params;
+			const { qty } = req.body;
 
 			const updatedCart = await this.service.changeProductQty(cid, pid, qty);
 			res.status(200).json(updatedCart);
