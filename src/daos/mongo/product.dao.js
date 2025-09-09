@@ -11,7 +11,6 @@ class ProductDao {
 			if (query) {
 				const parsed = JSON.parse(query);
 				Object.assign(filter, parsed);
-				console.log(filter);
 			}
 			let sortOrder = {};
 
