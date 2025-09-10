@@ -1,72 +1,49 @@
-import fs from "fs";
-import { idGenerator } from "../utils/utils.js";
+import { productModel } from "../models/products-model.js";
 
 class ProductManager {
-	constructor(path) {
-		this.path = path;
+	constructor(model) {
+		this.model = model;
 	}
 
-	async getProducts() {
-		if (fs.existsSync(this.path)) {
-			const products = await fs.promises.readFile(this.path, "utf-8");
-			return JSON.parse(products);
-		}
-		return [];
-	}
-
-	async getProductById(id) {
+	getAll = async () => {
 		try {
-			const products = await this.getProducts();
-			const productFound = products.find((product) => product.id === id);
-			if (!productFound) {
-				throw new Error("Product not found");
-			}
-			return productFound;
+			return await this.model.find();
 		} catch (error) {
-			throw error;
+			throw new Error(error);
 		}
-	}
+	};
 
-	async setProduct(obj) {
-		const product = { ...obj, id: idGenerator() };
-		const products = await this.getProducts();
-		products.push(product);
+	getById = async (id) => {
 		try {
-			await fs.promises.writeFile(this.path, JSON.stringify(products));
-			return product;
+			return await this.model.findById(id);
 		} catch (error) {
-			console.error(error);
+			throw new Error(error);
 		}
-	}
+	};
 
-	/*
-    Pre-condición el producto debe existir
-     */
-	async updateProduct(obj, id) {
+	create = async (productObj) => {
 		try {
-			const products = await this.getProducts();
-			let updatedProduct = await this.getProductById(id);
-			updatedProduct = { ...updatedProduct, ...obj };
-			const newProductsArray = products.filter((product) => product.id !== id);
-			newProductsArray.push(updatedProduct);
-			await fs.promises.writeFile(this.path, JSON.stringify(newProductsArray));
-			return updatedProduct;
+			return await this.model.create(productObj);
 		} catch (error) {
-			throw error;
+			throw new Error(error);
 		}
-	}
+	};
 
-	async deleteProduct(id) {
+	update = async (id, productData) => {
 		try {
-			const products = await this.getProducts();
-			const toDeleteProduct = await this.getProductById(id);
-			const newProductsArray = products.filter((product) => product.id !== id);
-			await fs.promises.writeFile(this.path, JSON.stringify(newProductsArray));
-			return toDeleteProduct;
+			return await this.model.findByIdAndUpdate(id, productData, { new: true });
 		} catch (error) {
-			throw error;
+			throw new Error(error);
 		}
-	}
+	};
+
+	delete = async (id) => {
+		try {
+			return await this.model.findByIdAndDelete(id);
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
 }
 
-export const productManager = new ProductManager("./src/data/products.json");
+export const productManager = new ProductManager(productModel);
