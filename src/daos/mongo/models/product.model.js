@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const productSchema = new Schema({
 	title: {
@@ -6,6 +7,7 @@ const productSchema = new Schema({
 		minLength: [3, "Deben ser más de 3 caracteres"],
 		maxLenght: [25, "Máximo 25 carecteres"],
 		required: true,
+		index: true,
 	},
 	description: {
 		type: String,
@@ -18,6 +20,7 @@ const productSchema = new Schema({
 		minLength: [3, "Deben ser más de 3 caracteres"],
 		maxLenght: [10, "Máximo 10 carecteres"],
 		required: true,
+		index: true,
 	},
 	price: {
 		type: Number,
@@ -40,5 +43,7 @@ const productSchema = new Schema({
 	},
 	thumbnails: [String],
 });
+
+productSchema.plugin(mongoosePaginate);
 
 export const productModel = model("products", productSchema);
