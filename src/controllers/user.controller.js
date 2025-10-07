@@ -41,9 +41,9 @@ class UserController {
 	login = async (req, res, next) => {
 		const { email, password } = req.body;
 		try {
-			const exist = await this.services.findUserByEmail(email);
+			const exist = await this.services.getUserByEmail(email);
 			if (exist) {
-				//Acá va la validación del password
+				req.session.user = exist.email;
 				return res.status(200).json({ message: "Exist OK login" });
 			}
 			res.status(404).json({ message: "Error en credenciales" });
