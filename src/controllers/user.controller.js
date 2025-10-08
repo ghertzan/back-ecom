@@ -43,10 +43,16 @@ class UserController {
 		try {
 			const exist = await this.services.getUserByEmail(email);
 			if (exist) {
-				req.session.user = exist.email;
-				return res.status(200).json({ message: "Exist OK login" });
+				const user = {
+					first_name: exist.first_name,
+					last_name: exist.last_name,
+					email: exist.email,
+				};
+				req.session.user = user;
+				res.redirect("/profile");
+			} else {
+				res.status(404).json({ message: "Error en credenciales" });
 			}
-			res.status(404).json({ message: "Error en credenciales" });
 		} catch (error) {
 			next(error);
 		}
