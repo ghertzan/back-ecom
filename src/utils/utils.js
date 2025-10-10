@@ -4,11 +4,12 @@ import bcrypt from "bcrypt";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(dirname(__filename), "..");
 
-export const createHash = (password) =>
-    bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-export const isValidPassword = (password, hash) =>
-    bcrypt.compareSync(password, hash);
+export const createHash = (password) => {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
+export const isValidPassword = (password, hash) => {
+	return bcrypt.compareSync(password, hash);
+};
 
 export function currencyFormat(amount) {
 	return new Intl.NumberFormat("es-AR", {

@@ -28,6 +28,14 @@ class UserDao {
 			throw new Error(error);
 		}
 	};
+
+	findById = async (id) => {
+		try {
+			return await this.model.findById(id);
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
 }
 
 export const userDao = new UserDao(userModel);

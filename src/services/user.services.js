@@ -31,6 +31,15 @@ class UserServices {
 			throw new Error(error);
 		}
 	};
+
+	findById = async (id) => {
+		try {
+			const user = await this.dao.findById(id);
+			return user;
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
 }
 
 export const userServices = new UserServices(userDao);

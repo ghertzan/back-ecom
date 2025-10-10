@@ -12,9 +12,13 @@ router.get("/login", (req, res, next) => {
 
 router.get("/profile", (req, res, next) => {
 	res.render("profile", {
-		title: "Perrfil logueado...",
+		title: "Perfil logueado...",
 		user: req.session.user,
 	});
+});
+
+router.get("/recupero", (req, res, next) => {
+	res.render("recupero", { title: "Recuperar contraseña" });
 });
 
 export default router;

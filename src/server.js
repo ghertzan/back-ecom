@@ -9,6 +9,8 @@ import userRouter from "./routes/session.router.js";
 import viewRouter from "./routes/view.router.js";
 import { errorHandler } from "./middleware/error-handler.js";
 import { initMongoDB } from "./data/db.connection.js";
+import passport from "passport";
+import { initializePassport } from "./config/passport.config.js";
 import "dotenv/config";
 
 const app = express();
@@ -25,13 +27,16 @@ app.use(
 	session({
 		store: MongoStore.create({
 			mongoUrl: process.env.MONGO_LOCAL_URL,
-			ttl: 60000,
+			ttl: 6000,
 		}),
 		secret,
 		resave: false,
 		saveUninitialized: false,
 	})
 );
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/", (req, res) => {
 	res.render("home", { title: "HOME" });

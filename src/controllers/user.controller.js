@@ -1,34 +1,55 @@
 import { userServices } from "../services/user.services.js";
+import { createHash, isValidPassword } from "../utils/utils.js";
 
 class UserController {
 	constructor(services) {
 		this.services = services;
 	}
 
-	createUser = async (req, res, next) => {
+	/* createUser = async (req, res, next) => {
 		const { first_name, last_name, email, password } = req.body;
 		try {
 			const exists = await this.services.getUserByEmail(email);
 			if (exists) {
 				return res.status(400).json({ message: "email already registered" });
 			}
+			const hashedPassword = createHash(password);
 			const newUser = {
 				first_name,
 				last_name,
 				email,
-				password,
+				password: hashedPassword,
 			};
 			const result = await this.services.createUser(newUser);
-			res.status(200).json(result);
+			res.redirect("/login");
 		} catch (error) {
 			next(error);
 		}
+	}; */
+
+	createUser = async (newUser) => {
+		try {
+			const user = this.services.createUser(newUser);
+			return user;
+		} catch (error) {
+			throw new Error(error);
+		}
 	};
 
+	findUserByEmail = async (email) => {
+		try {
+			const foundUser = await this.services.getUserByEmail(email);
+			if (foundUser) {
+				return foundUser;
+			}
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
 	getUserByEmail = async (req, res, next) => {
 		const { email } = req.body;
 		try {
-			const foundUser = this.services.findUserByEmail(email);
+			const foundUser = this.services.getUserByEmail(email);
 			if (foundUser) {
 				return res.status(200).json(foundUser);
 			}
@@ -38,23 +59,53 @@ class UserController {
 		}
 	};
 
+	findById = async (id) => {
+		try {
+			const userFound = await this.services.findById(id);
+			return userFound;
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
+
 	login = async (req, res, next) => {
 		const { email, password } = req.body;
 		try {
 			const exist = await this.services.getUserByEmail(email);
 			if (exist) {
-				const user = {
-					first_name: exist.first_name,
-					last_name: exist.last_name,
-					email: exist.email,
-				};
-				req.session.user = user;
-				res.redirect("/profile");
-			} else {
-				res.status(404).json({ message: "Error en credenciales" });
+				const isValid = isValidPassword(password, exist.password);
+				if (isValid) {
+					req.session.user = {
+						first_name: exist.first_name,
+						last_name: exist.last_name,
+						email: exist.email,
+					};
+					res.redirect("/profile");
+				}
 			}
+			res.status(401).json({ message: "Error en credenciales" });
 		} catch (error) {
 			next(error);
+		}
+	};
+
+	resetPassword = async (req, res) => {
+		const { email, password } = req.body;
+		console.log(password);
+
+		try {
+			const userFound = await this.services.getUserByEmail(email);
+
+			const hashedPassword = createHash(password);
+
+			userFound.password = hashedPassword;
+			await userFound.save();
+
+			res.redirect("/login");
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: "Internal server error", err: error.message });
 		}
 	};
 
