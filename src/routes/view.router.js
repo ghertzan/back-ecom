@@ -16,3 +16,5 @@ router.get("/profile", (req, res, next) => {
 		user: req.session.user,
 	});
 });
+
+export default router;
