@@ -12,10 +12,10 @@ import { initMongoDB } from "./data/db.connection.js";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import "dotenv/config";
+import envs from "./config/envs.js";
 
 const app = express();
-app.set("PORT", 8080);
-const secret = "fasfdsfhuibfdsa789;;-##po";
+app.set("PORT", envs.PORT);
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", join(__dirname, "views"));
@@ -26,10 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
 	session({
 		store: MongoStore.create({
-			mongoUrl: process.env.MONGO_LOCAL_URL,
+			mongoUrl: envs.MONGODB_LOCAL_URL,
 			ttl: 6000,
 		}),
-		secret,
+		secret: envs.SECRET,
 		resave: false,
 		saveUninitialized: false,
 	})
@@ -47,7 +47,7 @@ app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/session", userRouter);
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 initMongoDB()
 	.then((res) => console.log("Connected to MongoDB:"))

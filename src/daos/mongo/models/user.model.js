@@ -14,10 +14,23 @@ const UserSchema = new Schema({
 		required: true,
 		unique: true,
 	},
+    age: {
+      type: Number,
+      required: true,
+    },
 	password: {
 		type: String,
 		required: true,
 	},
+    cart: {
+        type: Schema.Types.ObjectId,
+        required:false,
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin','guest'],
+        default: 'user',
+    }
 });
 
 export const userModel = model("users", UserSchema);

@@ -7,9 +7,12 @@ class UserDao {
 
 	createUser = async (userObj) => {
 		try {
-			return this.model.create(userObj);
+            console.log("user DAO", userObj)
+			const user = await this.model.create(userObj);
+            console.log('Creación',user)
+            return user;
 		} catch (error) {
-			throw new Error(error);
+			console.log(error.message)
 		}
 	};
 

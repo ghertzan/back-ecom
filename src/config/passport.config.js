@@ -13,7 +13,8 @@ const initializePassport = () => {
 				usernameField: "email",
 			},
 			async (req, username, password, done) => {
-				const { first_name, last_name, email } = req.body;
+				const { first_name, last_name, email, age, role} = req.body;
+
 				try {
 					const userFound = await userController.findUserByEmail(username);
 
@@ -25,6 +26,8 @@ const initializePassport = () => {
 						first_name,
 						last_name,
 						email,
+                        age,
+                        role,
 						password: createHash(password),
 					};
 					console.log(newUser);

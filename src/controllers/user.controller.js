@@ -29,10 +29,11 @@ class UserController {
 
 	createUser = async (newUser) => {
 		try {
+            console.log("user Controller", newUser)
 			const user = this.services.createUser(newUser);
 			return user;
 		} catch (error) {
-			throw new Error(error);
+           console.log(error.message)
 		}
 	};
 
@@ -79,8 +80,10 @@ class UserController {
 						first_name: exist.first_name,
 						last_name: exist.last_name,
 						email: exist.email,
+                        age: exist.age,
+                        role: exist.role,
 					};
-					res.redirect("/profile");
+					return res.redirect("/profile");
 				}
 			}
 			res.status(401).json({ message: "Error en credenciales" });
