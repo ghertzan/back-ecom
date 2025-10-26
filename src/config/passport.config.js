@@ -2,9 +2,31 @@ import passport from "passport";
 import local from "passport-local";
 import { userController } from "../controllers/user.controller.js";
 import { createHash, isValidPassword } from "../utils/utils.js";
+import jwt from "passport-jwt";
+import envs from "../config/envs.js";
+
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
 
 const LocalStrategy = local.Strategy;
 const initializePassport = () => {
+	passport.use(
+		"jwt",
+		new JWTStrategy(
+			{
+				jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+				secretOrKey: envs.JWT_SECRET,
+			},
+			async (jwt_payload, done) => {
+				try {
+					return done(null, jwt_payload);
+				} catch (error) {
+					return done(error);
+				}
+			}
+		)
+	);
+
 	passport.use(
 		"register",
 		new LocalStrategy(
@@ -13,7 +35,7 @@ const initializePassport = () => {
 				usernameField: "email",
 			},
 			async (req, username, password, done) => {
-				const { first_name, last_name, email, age, role} = req.body;
+				const { first_name, last_name, email, age, role } = req.body;
 
 				try {
 					const userFound = await userController.findUserByEmail(username);
@@ -26,8 +48,8 @@ const initializePassport = () => {
 						first_name,
 						last_name,
 						email,
-                        age,
-                        role,
+						age,
+						role,
 						password: createHash(password),
 					};
 					console.log(newUser);
@@ -50,6 +72,14 @@ const initializePassport = () => {
 		const user = await userController.findById(id);
 		done(null, user);
 	});
+};
+
+const cookieExtractor = (req) => {
+	let token = null;
+	if (req && req.cookies) {
+		token = req.cookies["authCookie"];
+	}
+	return token;
 };
 
 export { initializePassport };

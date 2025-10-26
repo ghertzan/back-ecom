@@ -1,5 +1,6 @@
 import { userServices } from "../services/user.services.js";
 import { createHash, isValidPassword } from "../utils/utils.js";
+import { createToken } from "../utils/utils.js";
 
 class UserController {
 	constructor(services) {
@@ -29,11 +30,10 @@ class UserController {
 
 	createUser = async (newUser) => {
 		try {
-            console.log("user Controller", newUser)
 			const user = this.services.createUser(newUser);
 			return user;
 		} catch (error) {
-           console.log(error.message)
+			console.log(error.message);
 		}
 	};
 
@@ -69,26 +69,28 @@ class UserController {
 		}
 	};
 
-	login = async (req, res, next) => {
+	login = async (req, res) => {
 		const { email, password } = req.body;
 		try {
 			const exist = await this.services.getUserByEmail(email);
 			if (exist) {
 				const isValid = isValidPassword(password, exist.password);
 				if (isValid) {
-					req.session.user = {
+					const validUser = {
 						first_name: exist.first_name,
 						last_name: exist.last_name,
 						email: exist.email,
-                        age: exist.age,
-                        role: exist.role,
+						age: exist.age,
+						role: exist.role,
 					};
-					return res.redirect("/profile");
+					const token = createToken(validUser);
+					res.cookie("authCookie", token, { maxAge: 360000, httpOnly: true });
+					return res.status(200).redirect("/profile");
 				}
 			}
 			res.status(401).json({ message: "Error en credenciales" });
 		} catch (error) {
-			next(error);
+			console.log(error);
 		}
 	};
 

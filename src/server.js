@@ -11,8 +11,8 @@ import { errorHandler } from "./middleware/error-handler.js";
 import { initMongoDB } from "./data/db.connection.js";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
-import "dotenv/config";
 import envs from "./config/envs.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.set("PORT", envs.PORT);
@@ -34,9 +34,11 @@ app.use(
 		saveUninitialized: false,
 	})
 );
+
+app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 
 app.get("/", (req, res) => {
 	res.render("home", { title: "HOME" });
