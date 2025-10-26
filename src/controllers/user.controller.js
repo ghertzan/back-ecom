@@ -7,27 +7,6 @@ class UserController {
 		this.services = services;
 	}
 
-	/* createUser = async (req, res, next) => {
-		const { first_name, last_name, email, password } = req.body;
-		try {
-			const exists = await this.services.getUserByEmail(email);
-			if (exists) {
-				return res.status(400).json({ message: "email already registered" });
-			}
-			const hashedPassword = createHash(password);
-			const newUser = {
-				first_name,
-				last_name,
-				email,
-				password: hashedPassword,
-			};
-			const result = await this.services.createUser(newUser);
-			res.redirect("/login");
-		} catch (error) {
-			next(error);
-		}
-	}; */
-
 	createUser = async (newUser) => {
 		try {
 			const user = this.services.createUser(newUser);
@@ -47,18 +26,19 @@ class UserController {
 			throw new Error(error);
 		}
 	};
-	getUserByEmail = async (req, res, next) => {
-		const { email } = req.body;
-		try {
-			const foundUser = this.services.getUserByEmail(email);
-			if (foundUser) {
-				return res.status(200).json(foundUser);
+
+	/* 	getUserByEmail = async (req, res, next) => {
+			const { email } = req.body;
+			try {
+				const foundUser = this.services.getUserByEmail(email);
+				if (foundUser) {
+					return res.status(200).json(foundUser);
+				}
+				res.status(404).json({ message: "email do not exist." });
+			} catch (error) {
+				next(error);
 			}
-			res.status(404).json({ message: "email do not exist." });
-		} catch (error) {
-			next(error);
-		}
-	};
+		}; */
 
 	findById = async (id) => {
 		try {
@@ -91,7 +71,7 @@ class UserController {
 			res.status(401).json({ message: "Error en credenciales" });
 		} catch (error) {
 			console.log(error);
-			res.status();
+			res.status(500).json({ message: "Error interno del servidor" });
 		}
 	};
 
