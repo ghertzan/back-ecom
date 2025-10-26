@@ -1,7 +1,6 @@
 import { userServices } from "../services/user.services.js";
 import { createHash, isValidPassword } from "../utils/utils.js";
 import { createToken } from "../utils/utils.js";
-import Toastify from "toastify-js";
 
 class UserController {
 	constructor(services) {
@@ -27,19 +26,6 @@ class UserController {
 			throw new Error(error);
 		}
 	};
-
-	/* 	getUserByEmail = async (req, res, next) => {
-			const { email } = req.body;
-			try {
-				const foundUser = this.services.getUserByEmail(email);
-				if (foundUser) {
-					return res.status(200).json(foundUser);
-				}
-				res.status(404).json({ message: "email do not exist." });
-			} catch (error) {
-				next(error);
-			}
-		}; */
 
 	findById = async (id) => {
 		try {
