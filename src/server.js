@@ -33,12 +33,12 @@ app.use(
 		saveUninitialized: false,
 	})
 );
+console.log(join(__dirname, "../public"));
 
 app.use(express.static(join(__dirname, "../public")));
 app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
-//app.use(passport.session());
 
 app.get("/", (req, res) => {
 	res.render("home", { title: "HOME" });

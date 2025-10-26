@@ -1,6 +1,7 @@
 import { userServices } from "../services/user.services.js";
 import { createHash, isValidPassword } from "../utils/utils.js";
 import { createToken } from "../utils/utils.js";
+import Toastify from "toastify-js";
 
 class UserController {
 	constructor(services) {
@@ -68,7 +69,7 @@ class UserController {
 					return res.status(200).redirect("/api/session/current");
 				}
 			}
-			res.status(401).json({ message: "Error en credenciales" });
+			res.status(401).send("Error en las credenciales");
 		} catch (error) {
 			console.log(error);
 			res.status(500).json({ message: "Error interno del servidor" });
@@ -94,9 +95,8 @@ class UserController {
 	};
 
 	logout = async (req, res, next) => {
-		console.log(req.cookies);
 		res.clearCookie("authCookie");
-		res.status(200).json({ message: "Logout exitoso" });
+		res.status(200).redirect("/login");
 	};
 }
 
