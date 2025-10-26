@@ -1,6 +1,4 @@
 import { Router } from "express";
-import { tokenVerify } from "../utils/utils.js";
-import passport from "passport";
 
 const router = Router();
 
@@ -12,7 +10,7 @@ router.get("/login", (req, res, next) => {
 	res.render("login", { title: "Login..." });
 });
 
-router.get(
+/* router.get(
 	"/profile",
 	passport.authenticate("jwt", { session: false }),
 	(req, res) => {
@@ -21,7 +19,7 @@ router.get(
 			user: req.user,
 		});
 	}
-);
+); */
 
 router.get("/recupero", (req, res, next) => {
 	res.render("recupero", { title: "Recuperar contraseña" });

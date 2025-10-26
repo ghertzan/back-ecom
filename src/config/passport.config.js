@@ -1,7 +1,7 @@
 import passport from "passport";
 import local from "passport-local";
 import { userController } from "../controllers/user.controller.js";
-import { createHash, isValidPassword } from "../utils/utils.js";
+import { createHash } from "../utils/utils.js";
 import jwt from "passport-jwt";
 import envs from "../config/envs.js";
 

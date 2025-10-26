@@ -85,19 +85,18 @@ class UserController {
 					};
 					const token = createToken(validUser);
 					res.cookie("authCookie", token, { maxAge: 360000, httpOnly: true });
-					return res.status(200).redirect("/profile");
+					return res.status(200).redirect("/api/session/current");
 				}
 			}
 			res.status(401).json({ message: "Error en credenciales" });
 		} catch (error) {
 			console.log(error);
+			res.status();
 		}
 	};
 
 	resetPassword = async (req, res) => {
 		const { email, password } = req.body;
-		console.log(password);
-
 		try {
 			const userFound = await this.services.getUserByEmail(email);
 
@@ -115,9 +114,9 @@ class UserController {
 	};
 
 	logout = async (req, res, next) => {
-		if (req.session.user) {
-			//destrucción de session
-		}
+		console.log(req.cookies);
+		res.clearCookie("authCookie");
+		res.status(200).json({ message: "Logout exitoso" });
 	};
 }
 

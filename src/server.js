@@ -7,7 +7,6 @@ import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
 import userRouter from "./routes/session.router.js";
 import viewRouter from "./routes/view.router.js";
-import { errorHandler } from "./middleware/error-handler.js";
 import { initMongoDB } from "./data/db.connection.js";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
@@ -35,6 +34,7 @@ app.use(
 	})
 );
 
+app.use(express.static(join(__dirname, "../public")));
 app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
@@ -48,8 +48,6 @@ app.use("/", viewRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/session", userRouter);
-
-// app.use(errorHandler);
 
 initMongoDB()
 	.then((res) => console.log("Connected to MongoDB:"))

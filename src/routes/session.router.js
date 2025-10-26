@@ -4,7 +4,6 @@ import passport from "passport";
 
 const router = Router();
 
-// router.post("/register", userController.createUser);
 router.post(
 	"/register",
 	passport.authenticate("register", { failureRedirect: "failregister" }),
@@ -18,5 +17,23 @@ router.get("/failregister", (req, res) => {
 
 router.post("/login", userController.login);
 router.post("/recupero", userController.resetPassword);
+router.post("/logout", userController.logout);
+router.get(
+	"/current",
+	passport.authenticate("jwt", {
+		session: false,
+		failureRedirect: "failCurrent",
+	}),
+	(req, res) => {
+		res.render("profile", {
+			title: "Usuario logueado...",
+			user: req.user,
+		});
+	}
+);
+router.get("/failCurrent", (req, res) => {
+	res.status(401);
+	res.redirect("/login");
+});
 
 export default router;
