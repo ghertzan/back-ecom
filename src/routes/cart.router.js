@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { cartController } from "../controllers/carts.controller.js";
+import { policiesHandler } from "../middleware/policiesHandler.js";
 
 const router = Router();
 
-router.get("/", cartController.getAllCarts);
+router.get("/", policiesHandler(["ADMIN"]), cartController.getAllCarts);
 
-router.post("/", cartController.createCart);
+router.post("/", policiesHandler(["PUBLIC"]), cartController.createCart);
 
 router.get("/:cid", cartController.getCartById);
 

@@ -12,6 +12,7 @@ import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import envs from "./config/envs.js";
 import cookieParser from "cookie-parser";
+import { policiesHandler } from "./middleware/policiesHandler.js";
 
 const app = express();
 app.set("PORT", envs.PORT);
@@ -33,13 +34,13 @@ app.use(
 		saveUninitialized: false,
 	})
 );
-console.log(join(__dirname, "../public"));
-
 app.use(express.static(join(__dirname, "../public")));
 app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
+app.use(passport.session());
 
+//Rutas
 app.get("/", (req, res) => {
 	res.render("home", { title: "HOME" });
 });
@@ -49,6 +50,9 @@ app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/session", userRouter);
 
+app.use(policiesHandler);
+
+//Inicialización de Base
 initMongoDB()
 	.then((res) => console.log("Connected to MongoDB:"))
 	.catch((error) => console.error(error));

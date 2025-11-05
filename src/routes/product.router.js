@@ -1,12 +1,21 @@
 import { Router } from "express";
 import { productController } from "../controllers/product.controller.js";
+import { policiesHandler } from "../middleware/policiesHandler.js";
 
 const router = Router();
 
-router.get("/", productController.getAllProducts);
-router.get("/:id", productController.getProductById);
-router.post("/", productController.createProduct);
-router.put("/:id", productController.updateProduct);
-router.delete("/:id", productController.deleteProduct);
+router.get("/", policiesHandler(["PUBLIC"]), productController.getAllProducts);
+router.get(
+	"/:id",
+	policiesHandler(["PUBLIC"]),
+	productController.getProductById
+);
+router.post("/", policiesHandler(["ADMIN"]), productController.createProduct);
+router.put("/:id", policiesHandler(["ADMIN"]), productController.updateProduct);
+router.delete(
+	"/:id",
+	policiesHandler(["ADMIN"]),
+	productController.deleteProduct
+);
 
 export default router;

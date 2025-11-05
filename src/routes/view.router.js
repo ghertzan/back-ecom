@@ -10,17 +10,6 @@ router.get("/login", (req, res, next) => {
 	res.render("login", { title: "Login..." });
 });
 
-/* router.get(
-	"/profile",
-	passport.authenticate("jwt", { session: false }),
-	(req, res) => {
-		res.render("profile", {
-			title: "Usuario Logueado...",
-			user: req.user,
-		});
-	}
-); */
-
 router.get("/recupero", (req, res, next) => {
 	res.render("recupero", { title: "Recuperar contraseña" });
 });

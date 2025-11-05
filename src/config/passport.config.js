@@ -1,7 +1,7 @@
 import passport from "passport";
 import local from "passport-local";
-import { userController } from "../controllers/user.controller.js";
-import { createHash } from "../utils/utils.js";
+import { userServices } from "../services/user.services.js";
+import { isValidPassword } from "../utils/utils.js";
 import jwt from "passport-jwt";
 import envs from "../config/envs.js";
 
@@ -10,6 +10,31 @@ const ExtractJWT = jwt.ExtractJwt;
 
 const LocalStrategy = local.Strategy;
 const initializePassport = () => {
+	passport.use(
+		"login",
+		new LocalStrategy(
+			{ usernameField: "email" },
+			async (username, password, done) => {
+				try {
+					const userFound = await userServices.getUserByEmail(username);
+					if (!userFound) throw new Error("Usuario no existe");
+					const isValid = isValidPassword(password, userFound.password);
+					if (!isValid) throw new Error("Credenciales no validas");
+					const user = {
+						_id: userFound._id,
+						first_name: userFound.first_name,
+						last_name: userFound.last_name,
+						email: userFound.email,
+						age: userFound.age,
+						role: userFound.role,
+					};
+					done(null, user);
+				} catch (error) {
+					done(error, null);
+				}
+			}
+		)
+	);
 	passport.use(
 		"jwt",
 		new JWTStrategy(
@@ -27,49 +52,11 @@ const initializePassport = () => {
 		)
 	);
 
-	passport.use(
-		"register",
-		new LocalStrategy(
-			{
-				passReqToCallback: true,
-				usernameField: "email",
-			},
-			async (req, username, password, done) => {
-				const { first_name, last_name, email, age, role } = req.body;
-
-				try {
-					const userFound = await userController.findUserByEmail(username);
-
-					if (userFound) {
-						console.log("Ya existe");
-						return done(null, false);
-					}
-					const newUser = {
-						first_name,
-						last_name,
-						email,
-						age,
-						role,
-						password: createHash(password),
-					};
-					console.log(newUser);
-
-					const user = await userController.createUser(newUser);
-					console.log("user: ", user);
-
-					return done(null, user);
-				} catch (error) {
-					return done(`err: ${error}`, false);
-				}
-			}
-		)
-	);
-
 	passport.serializeUser((user, done) => {
 		done(null, user._id);
 	});
 	passport.deserializeUser(async (id, done) => {
-		const user = await userController.findById(id);
+		const user = await userServices.findById(id);
 		done(null, user);
 	});
 };
