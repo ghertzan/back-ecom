@@ -4,6 +4,7 @@ import { userServices } from "../services/user.services.js";
 import { isValidPassword } from "../utils/utils.js";
 import jwt from "passport-jwt";
 import envs from "../config/envs.js";
+import UserMapper from "../daos/mappers/User.mapper.js";
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -20,14 +21,7 @@ const initializePassport = () => {
 					if (!userFound) throw new Error("Usuario no existe");
 					const isValid = isValidPassword(password, userFound.password);
 					if (!isValid) throw new Error("Credenciales no validas");
-					const user = {
-						_id: userFound._id,
-						first_name: userFound.first_name,
-						last_name: userFound.last_name,
-						email: userFound.email,
-						age: userFound.age,
-						role: userFound.role,
-					};
+					const user = UserMapper.createUserDTO(userFound);
 					done(null, user);
 				} catch (error) {
 					done(error, null);

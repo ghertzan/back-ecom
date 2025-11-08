@@ -1,5 +1,6 @@
 import { userServices } from "../services/user.services.js";
 import { createHash, createToken } from "../utils/utils.js";
+import UserMapper from "../daos/mappers/User.mapper.js";
 
 class UserController {
 	constructor(services) {
@@ -23,15 +24,14 @@ class UserController {
 				password: createHash(password),
 			};
 			let user = await this.services.createUser(newUser);
-			res.status(200).json({ status: "Usuario creado", payload: user._id });
+			const userDTO = UserMapper.createUserDTO(user);
+			res.status(200).json({ status: "Usuario creado", payload: userDTO });
 		} catch (error) {
 			return res.status(500).json({ status: "Error", message: error.message });
 		}
 	};
 
 	findUserByEmail = async (req, res) => {
-		console.log("here");
-
 		try {
 			const { email } = req.body;
 			console.log(email);
@@ -54,6 +54,7 @@ class UserController {
 			if (!req.user) throw new Error("Error de credenciales");
 			const token = createToken(req.user);
 			res.cookie("authCookie", token, { maxAge: 360000, httpOnly: true });
+
 			res.sendStatus(200);
 		} catch (error) {
 			res.status(500).json({ status: "Error", message: error.message });
