@@ -30,8 +30,6 @@ class CartService {
 
 	createCart = async (uid) => {
 		try {
-			console.log(uid);
-
 			const cart = await this.dao.createCart(uid);
 			if (!cart) {
 				throw new CustomError("Error: El carrito no se pudo crear", 500);

@@ -31,18 +31,14 @@ class CartController {
 
 	createCart = async (req, res, next) => {
 		try {
-			console.log("controller");
-
 			const uid = req.params.uid || null;
 			console.log(uid);
 
 			const newCart = await this.service.createCart(uid);
-			res
-				.status(200)
-				.json({
-					status: "Correcto",
-					payload: { cid: newCart._id, uid: newCart.user },
-				});
+			res.status(200).json({
+				status: "Correcto",
+				payload: { cid: newCart._id, uid: newCart.user },
+			});
 		} catch (error) {
 			next(error);
 		}
