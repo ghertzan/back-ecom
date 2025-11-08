@@ -31,13 +31,24 @@ class CartController {
 
 	createCart = async (req, res, next) => {
 		try {
-			const newCart = await this.service.createCart();
-			res.status(200).json(newCart);
+			console.log("controller");
+
+			const uid = req.params.uid || null;
+			console.log(uid);
+
+			const newCart = await this.service.createCart(uid);
+			res
+				.status(200)
+				.json({
+					status: "Correcto",
+					payload: { cid: newCart._id, uid: newCart.user },
+				});
 		} catch (error) {
 			next(error);
 		}
 	};
 
+	//Suponiendo que no hay ningun carrito en la session
 	addProductToCart = async (req, res, next) => {
 		try {
 			const { cid } = req.params;

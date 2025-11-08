@@ -28,11 +28,13 @@ class CartService {
 		}
 	};
 
-	createCart = async () => {
+	createCart = async (uid) => {
 		try {
-			const cart = await this.dao.createCart();
+			console.log(uid);
+
+			const cart = await this.dao.createCart(uid);
 			if (!cart) {
-				throw new CustomError("Cart not created", 500);
+				throw new CustomError("Error: El carrito no se pudo crear", 500);
 			}
 			return cart;
 		} catch (error) {
@@ -45,7 +47,7 @@ class CartService {
 			const product = await productDao.getProductById(pid);
 
 			if (!product) {
-				throw new CustomError("Error: product not exist", 404);
+				throw new CustomError("Error: El producto no existe", 404);
 			}
 
 			return await this.dao.addProductToCart(cid, product._id);

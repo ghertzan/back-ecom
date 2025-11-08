@@ -6,16 +6,32 @@ const router = Router();
 
 router.get("/", policiesHandler(["ADMIN"]), cartController.getAllCarts);
 
-router.post("/", policiesHandler(["PUBLIC"]), cartController.createCart);
+router.post("/{:uid}", policiesHandler(["PUBLIC"]), cartController.createCart);
 
-router.get("/:cid", cartController.getCartById);
+router.get(
+	"/:cid",
+	policiesHandler(["ADMIN, USER"]),
+	cartController.getCartById
+);
 
-router.delete("/:cid/products/:pid", cartController.removeProductFromCart);
+router.delete(
+	"/:cid/products/:pid",
+	policiesHandler(["PUBLIC"]),
+	cartController.removeProductFromCart
+);
 
-router.post("/:cid/products/:pid", cartController.addProductToCart);
+router.post(
+	"/:cid/products/:pid",
+	policiesHandler(["PUBLIC"]),
+	cartController.addProductToCart
+);
 
-router.put("/:cid/products/:pid", cartController.changeProductQty);
+router.put(
+	"/:cid/products/:pid",
+	policiesHandler(["PUBLIC"]),
+	cartController.changeProductQty
+);
 
-router.delete("/:cid", cartController.clearCart);
+router.delete("/:cid", policiesHandler(["PUBLIC"]), cartController.clearCart);
 
 export default router;

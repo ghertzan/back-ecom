@@ -21,13 +21,21 @@ class CartDao {
 		}
 	};
 
-	createCart = async () => {
+	createCart = async (uid) => {
 		try {
-			const a = await this.model.create({
-				items: [],
-			});
-			console.log(a);
-			return a;
+			let newCart = null;
+			if (!uid) {
+				newCart = await this.model.create({
+					items: [],
+				});
+			} else {
+				newCart = await this.model.create({
+					user: uid,
+					items: [],
+				});
+			}
+			console.log(newCart);
+			return newCart;
 		} catch (error) {
 			throw new Error(error);
 		}
