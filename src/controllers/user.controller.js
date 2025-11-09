@@ -11,9 +11,12 @@ class UserController {
 		const { first_name, last_name, email, age, role, password } = req.body;
 		try {
 			const exist = await this.services.getUserByEmail(email);
+			console.log(exist);
+
 			if (exist) {
-				res.status(400).json({ status: "Error", message: "Usuario ya existe" });
-				return res.redirect("/login");
+				return res
+					.status(400)
+					.json({ status: "Error", message: "Usuario ya existe" });
 			}
 			const newUser = {
 				first_name,

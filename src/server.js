@@ -12,6 +12,7 @@ import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import envs from "./config/envs.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { policiesHandler } from "./middleware/policiesHandler.js";
 
 const app = express();
@@ -26,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
 	session({
 		store: MongoStore.create({
-			mongoUrl: envs.MONGODB_LOCAL_URL,
+			mongoUrl: envs.MONGODB_ATLAS_URL,
 			ttl: 6000,
 		}),
 		secret: envs.SECRET,
@@ -39,11 +40,20 @@ app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(
+	cors({
+		origin: `http://localhost:5173`,
+		methods: ["GET", "POST", "PUT", "DELETE"],
+	})
+);
 
 //Rutas
 app.get("/", (req, res) => {
 	res.render("home", { title: "HOME" });
 });
+// app.get("/{*splat}", (req, res) => {
+// 	res.status(204).json({ status: "Error", message: "Recurso no encontrado." });
+// });
 
 app.use("/", viewRouter);
 app.use("/api/products", productRouter);

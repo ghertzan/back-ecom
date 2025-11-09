@@ -16,22 +16,22 @@ router.get(
 
 router.delete(
 	"/:cid/products/:pid",
-	policiesHandler(["PUBLIC"]),
+	policiesHandler(["USER"]),
 	cartController.removeProductFromCart
 );
 
 router.post(
 	"/:cid/products/:pid",
-	policiesHandler(["PUBLIC"]),
+	policiesHandler(["USER"]),
 	cartController.addProductToCart
 );
 
 router.put(
 	"/:cid/products/:pid",
-	policiesHandler(["PUBLIC"]),
+	policiesHandler(["USER"]),
 	cartController.changeProductQty
 );
 
-router.delete("/:cid", policiesHandler(["PUBLIC"]), cartController.clearCart);
+router.delete("/:cid", policiesHandler(["USER"]), cartController.clearCart);
 
 export default router;

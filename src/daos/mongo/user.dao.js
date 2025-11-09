@@ -10,7 +10,7 @@ class UserDao {
 			const user = await this.model.create(userObj);
 			return user;
 		} catch (error) {
-			console.log(error.message);
+			throw new Error(error);
 		}
 	};
 
