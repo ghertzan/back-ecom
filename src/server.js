@@ -47,16 +47,6 @@ app.use(
 	})
 );
 
-//Rutas
-// Nota: Handlebars está deshabilitado. Descomentar engine si es necesario.
-// app.get("/", (req, res) => {
-// 	res.render("home", { title: "HOME" });
-// });
-// app.get("/{*splat}", (req, res) => {
-// 	res.status(204).json({ status: "Error", message: "Recurso no encontrado." });
-// });
-
-// app.use("/", viewRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/session", userRouter);
