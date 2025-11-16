@@ -32,8 +32,6 @@ class CartController {
 	createCart = async (req, res, next) => {
 		try {
 			const uid = req.params.uid || null;
-			console.log(uid);
-
 			const newCart = await this.service.createCart(uid);
 			res.status(200).json({
 				status: "Correcto",

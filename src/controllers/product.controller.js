@@ -1,3 +1,4 @@
+import envs from "../config/envs.js";
 import { productService } from "../services/product.services.js";
 
 class ProductController {
@@ -16,10 +17,10 @@ class ProductController {
 				sort
 			);
 			const nextPage = response.hasNextPage
-				? `http://localhost:8080/api/products?page=${response.nextPage}`
+				? `http://localhost:${envs.PORT}/api/products?page=${response.nextPage}`
 				: null;
 			const prevPage = response.hasPrevPage
-				? `http://localhost:8080/api/products?page=${response.prevPage}`
+				? `http://localhost:${envs.PORT}/api/products?page=${response.prevPage}`
 				: null;
 			res.json({
 				payload: response.docs,
@@ -75,7 +76,7 @@ class ProductController {
 		try {
 			const { id } = req.params;
 			const deletedProduct = await this.service.deleteProduct(id);
-			res.json.status(200)(deletedProduct);
+			res.status(200).json(deletedProduct);
 		} catch (error) {
 			next(error);
 		}

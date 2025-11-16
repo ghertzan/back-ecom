@@ -1,8 +1,15 @@
 import { Router } from "express";
 import { cartController } from "../controllers/carts.controller.js";
 import { policiesHandler } from "../middleware/policiesHandler.js";
+import { ticketController } from "../controllers/ticket.controller.js";
 
 const router = Router();
+
+router.post(
+	"/:cid/purchase",
+	policiesHandler(["USER"]),
+	ticketController.create
+);
 
 router.get("/", policiesHandler(["ADMIN"]), cartController.getAllCarts);
 

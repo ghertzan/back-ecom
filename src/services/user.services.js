@@ -25,7 +25,7 @@ class UserServices {
 
 	getUserByEmail = async (email) => {
 		try {
-			const user = this.dao.getUserByEmail(email);
+			const user = await this.dao.getUserByEmail(email);
 			return user;
 		} catch (error) {
 			throw new Error(error);

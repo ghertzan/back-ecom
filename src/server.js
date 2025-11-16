@@ -1,5 +1,5 @@
 import express from "express";
-import { engine } from "express-handlebars";
+// import { engine } from "express-handlebars";
 import { join, __dirname } from "./utils/utils.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -17,9 +17,9 @@ import { policiesHandler } from "./middleware/policiesHandler.js";
 
 const app = express();
 app.set("PORT", envs.PORT);
-app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
-app.set("views", join(__dirname, "views"));
+// app.engine("handlebars", engine());
+// app.set("view engine", "handlebars");
+// app.set("views", join(__dirname, "views"));
 
 //Middlewares
 app.use(express.json());
@@ -48,14 +48,15 @@ app.use(
 );
 
 //Rutas
-app.get("/", (req, res) => {
-	res.render("home", { title: "HOME" });
-});
+// Nota: Handlebars está deshabilitado. Descomentar engine si es necesario.
+// app.get("/", (req, res) => {
+// 	res.render("home", { title: "HOME" });
+// });
 // app.get("/{*splat}", (req, res) => {
 // 	res.status(204).json({ status: "Error", message: "Recurso no encontrado." });
 // });
 
-app.use("/", viewRouter);
+// app.use("/", viewRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/session", userRouter);
