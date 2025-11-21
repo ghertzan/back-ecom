@@ -22,6 +22,7 @@ class UserController {
 				first_name,
 				last_name,
 				email,
+				carts: [],
 				age,
 				role,
 				password: createHash(password),

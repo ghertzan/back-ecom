@@ -16,7 +16,7 @@ export default class UserMapper {
 			last_name: userDTO.last_name,
 			email: userDTO.email,
 			age: userDTO.age,
-			cart: userDTO.cart ? null : userDTO.cart,
+			carts: userDTO.cart ? null : userDTO.cart,
 			role: userDTO.role,
 			id: userDTO._id,
 		};

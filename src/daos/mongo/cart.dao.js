@@ -1,4 +1,5 @@
 import { cartModel } from "./models/cart.model.js";
+import { userServices } from "../../services/user.services.js";
 
 class CartDao {
 	constructor(model) {
@@ -8,6 +9,14 @@ class CartDao {
 	getAllCarts = async () => {
 		try {
 			return await this.model.find({});
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
+
+	getCartByUserId = async (uid) => {
+		try {
+			return await this.model.find({ user: uid });
 		} catch (error) {
 			throw new Error(error);
 		}
@@ -33,6 +42,11 @@ class CartDao {
 					user: uid,
 					items: [],
 				});
+				const user = await userServices.findById(uid);
+				const newUserCarts = user.carts;
+				newUserCarts.push(newCart);
+				user.carts = newUserCarts;
+				await user.save();
 			}
 			console.log(newCart);
 			return newCart;

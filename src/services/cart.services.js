@@ -15,6 +15,14 @@ class CartService {
 		}
 	};
 
+	getCartByUserId = async (uid) => {
+		try {
+			const userCarts = await this.dao.getCartByUserId(uid);
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
+
 	getCartById = async (id) => {
 		try {
 			const cart = await this.dao.getCartById(id);
