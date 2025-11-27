@@ -14,7 +14,7 @@ router.post(
 
 router.get("/", policiesHandler(["ADMIN"]), cartController.getAllCarts);
 
-router.post("/{:uid}", policiesHandler(["PUBLIC"]), cartController.createCart);
+router.post("/{:uid}", policiesHandler(["USER"]), cartController.createCart);
 
 router.get(
 	"/:cid",
@@ -31,6 +31,7 @@ router.delete(
 router.post(
 	"/:cid/products/:pid",
 	policiesHandler(["USER"]),
+	cartAuthHandler,
 	cartController.addProductToCart
 );
 

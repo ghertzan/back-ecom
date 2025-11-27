@@ -1,5 +1,6 @@
 import { cartModel } from "./models/cart.model.js";
 import { userServices } from "../../services/user.services.js";
+import mongoose from "mongoose";
 
 class CartDao {
 	constructor(model) {
@@ -16,10 +17,27 @@ class CartDao {
 
 	getCartByUserId = async (uid) => {
 		try {
-			return await this.model.find({ user: uid });
+			if (!uid) throw new Error("Se requiere uid");
+			if (!mongoose.Types.ObjectId.isValid(uid)) {
+				console.warn("uid no es un ObjectId válido:", uid);
+			}
+			const found = await this.model
+				.find({ user: uid })
+				.populate("items.product");
+			return found;
 		} catch (error) {
 			throw new Error(error);
 		}
+
+		// 	try {
+		// 		const found = await this.model.find({ user: uid });
+		// 		console.log("Encontrado: ", found);
+		// 		return found;
+
+		// 		// return await this.model.find({ user: uid });
+		// 	} catch (error) {
+		// 		throw new Error(error);
+		// 	}
 	};
 
 	getCartById = async (id) => {
@@ -43,12 +61,9 @@ class CartDao {
 					items: [],
 				});
 				const user = await userServices.findById(uid);
-				const newUserCarts = user.carts;
-				newUserCarts.push(newCart);
-				user.carts = newUserCarts;
+				user.carts.push({ cartId: newCart._id });
 				await user.save();
 			}
-			console.log(newCart);
 			return newCart;
 		} catch (error) {
 			throw new Error(error);

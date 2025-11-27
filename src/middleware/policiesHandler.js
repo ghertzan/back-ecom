@@ -6,7 +6,9 @@ export const policiesHandler = (policies) => (req, res, next) => {
 
 	const authHeaders = req.headers.authorization;
 	if (!authHeaders)
-		return res.status(401).json({ status: "Error", message: "No autorizado" });
+		return res
+			.status(401)
+			.json({ status: "Error", message: "No autorizado - PH" });
 	const token = authHeaders.split(" ")[1];
 
 	const user = jwt.verify(token, envs.JWT_SECRET);
